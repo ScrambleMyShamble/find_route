@@ -26,7 +26,7 @@
                     <a class="nav-link active" aria-current="page" href="{% url 'cities:home' %}">Города</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link" href="{% url 'trains:home' %}">Поезда</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Pricing</a>
@@ -34,12 +34,11 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown link
+                        Добавить
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li><a class="dropdown-item" href="{% url 'cities:create' %}">Новый город</a></li>
+                        <li><a class="dropdown-item" href="{% url 'trains:create' %}">Новый поезд</a></li>
                     </ul>
                 </li>
             </ul>
