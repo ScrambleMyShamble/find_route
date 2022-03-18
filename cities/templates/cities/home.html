@@ -7,14 +7,18 @@
     <div class="col-md">
         {% for object in objects_list %}
         <p>
-        <a href="{% url 'cities:detail' pk=object.pk%}">{{object.name}}</a>
+            <a href="{% url 'cities:detail' pk=object.pk%}">{{object.name}}</a>
         </p>
         {% endfor %}
     </div>
 </div>
 
-<form action="" method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="submit">
-</form>
+<div class="row">
+    <div class="col-md-4">
+        <form action="" method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="submit">
+        </form>
+    </div>
+</div>
 {% endblock %}
