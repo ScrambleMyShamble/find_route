@@ -61,4 +61,44 @@ def get_routes(request, form) -> dict:
     # если не нужно проезжать через какие-либо города
     else:
         right_ways = all_ways
+
+    # В форме поиска также можно задать желаемое время в пути. Далее пишем логику по поиску маршрута,
+    # время в пути которого будет меньше или равно времени, которых задал пользователь в форме
+    # Итоговая переменная с подходящим маршрутом
+    appropriate_route = []
+    # в all_trains ключом будет список городов from_city, to_city в которые и из которых ходят поезда,
+    # а значением будет список поездов, которые эти города проходят
+    all_trains = {}
+    # Проходим циклом по trains_queryset(Train.objects.all()), создаём словарь с составным ключом
+    # составной ключ это кортеж из городов(from -> to), а значение это поезда
+    for query in trains_queryset:
+        all_trains.setdefault((query.from_city_id, query.to_city_id), [])
+        all_trains[(query.from_city_id, query.to_city_id)].append(query)
+    # проходимся по ранее отобранным маршрутам, с проверками по городам
+    for route in right_ways:
+        routes_data = {}
+        routes_data['trains'] = []
+        # в total_time запишем сумму времени всех отрезков маршрута
+        total_time = 0
+        # проходимся в цикле по route. В route хранится список состоящий из id городов, первый и последний
+        # элемент списка это пункт А и В, между ними города которые хочет проехать пользователь, если таковые есть.
+        # Задача в том, чтобы вытаскивать в цикле каждую пару городов и суммировать время в переменную total_time
+        for city_pair in range(len(route) - 1):
+            # Вытаскиваем первую пару городов в маршруте
+            pair = all_trains[(route[city_pair], route[city_pair + 1])]
+            # pair это список, состоящий из пары городов, через индексирование вытаскиваем эту пару и
+            # берём нужный атрибут т.е. travel_time
+            pair_instanse = pair[0]
+            # Накапливаем время в переменной total_time
+            total_time += pair_instanse.travel_time
+        routes_data['total_time'] = total_time
+        # если маршрут подходит по времени
+        if total_time <= travel_time:
+            # вносим его в список подходящих маршрутов
+            appropriate_route.append(routes_data)
+    # если ни один маршрут не подходит по времени
+    if not appropriate_route:
+        raise ValueError('Время в пути больше заданного')
+
+    context['cities'] = {'from_city': from_city, 'to_city': to_city}
     return context
