@@ -2,7 +2,33 @@
 {% block title %} Поиск маршрута {% endblock %}
 
 {% block content %}
-<h1>Поиск маршрута</h1>
+<h2>Поиск маршрута</h2>
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        {% if routes %}
+        <h3>Список маршрутов из города {{ cities.from_city }} в город {{ cities.to_city }}</h3>
+            {% for route in routes %}
+            <h4>Время в пути - {{ route.total_time }} часов</h4>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Список поездов по маршруту:</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for train in route.trains %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td colspan="2"> Поезд № {{train.name}} из {{ train.from_city.name }} в {{train.to_city.name}}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
 {% url 'find_routes' as action %}
 {% include 'form.html' with button='Найти маршрут' action=action %}
 

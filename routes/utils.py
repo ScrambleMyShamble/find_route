@@ -76,8 +76,8 @@ def get_routes(request, form) -> dict:
         all_trains[(query.from_city_id, query.to_city_id)].append(query)
     # проходимся по ранее отобранным маршрутам, с проверками по городам
     for route in right_ways:
-        routes_data = {}
-        routes_data['trains'] = []
+        routes_datas = {}
+        routes_datas['trains'] = []
         # в total_time запишем сумму времени всех отрезков маршрута
         total_time = 0
         # проходимся в цикле по route. В route хранится список состоящий из id городов, первый и последний
@@ -91,15 +91,18 @@ def get_routes(request, form) -> dict:
             pair_instanse = pair[0]
             # Накапливаем время в переменной total_time
             total_time += pair_instanse.travel_time
-        routes_data['total_time'] = total_time
+            routes_datas['trains'].append(pair_instanse)
+        routes_datas['total_time'] = total_time
         # если маршрут подходит по времени
         if total_time <= travel_time:
             # вносим его в список подходящих маршрутов
-            appropriate_route.append(routes_data)
+            appropriate_route.append(routes_datas)
     # если ни один маршрут не подходит по времени
     if not appropriate_route:
         raise ValueError('Время в пути больше заданного')
 
+
     # Возвращаем маршрут который подходит по всем параметрам
+    context['routes'] = appropriate_route
     context['cities'] = {'from_city': from_city, 'to_city': to_city}
     return context
