@@ -100,5 +100,6 @@ def get_routes(request, form) -> dict:
     if not appropriate_route:
         raise ValueError('Время в пути больше заданного')
 
+    # Возвращаем маршрут который подходит по всем параметрам
     context['cities'] = {'from_city': from_city, 'to_city': to_city}
     return context
