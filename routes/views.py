@@ -81,10 +81,9 @@ class RouteDetailView(DetailView):
     template_name = 'routes/route_detail.html'
 
 
-class RouteDeleteView(LoginRequiredMixin, DeleteView):
+class RouteDeleteView(DeleteView):
     model = Route
     success_url = reverse_lazy('home')
 
     def get(self, request, *args, **kwargs):
-        messages.success(request, 'Маршрут успешно удален')
         return self.post(request, *args, **kwargs)
