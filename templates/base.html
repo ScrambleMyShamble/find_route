@@ -40,6 +40,18 @@
                         <li><a class="dropdown-item" href="{% url 'cities:create' %}">Новый город</a></li>
                         <li><a class="dropdown-item" href="{% url 'trains:create' %}">Новый поезд</a></li>
                     </ul>
+                    {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:logout' %}">Выйти</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:login' %}">Войти</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:registration' %}">Регистрация</a>
+                </li>
+                {% endif %}
                 </li>
             </ul>
         </div>

@@ -1,4 +1,5 @@
 # Create your views here.
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator
@@ -26,7 +27,7 @@ class TrainDetailView(DetailView):
     template_name = 'trains/detail.html'
 
 
-class TrainCreateView(SuccessMessageMixin, CreateView):
+class TrainCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Train
     form_class = TrainForm
     template_name = 'trains/create.html'
@@ -34,7 +35,7 @@ class TrainCreateView(SuccessMessageMixin, CreateView):
     success_message = 'Поезд успешно создан'
 
 
-class TrainUpdateView(SuccessMessageMixin, UpdateView):
+class TrainUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = Train
     form_class = TrainForm
     template_name = 'trains/update.html'
@@ -42,10 +43,11 @@ class TrainUpdateView(SuccessMessageMixin, UpdateView):
     success_message = 'Поезд успешно отредактирован'
 
 
-class TrainDeleteView(DeleteView):
+class TrainDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     model = Train
     template_name = 'trains/delete.html'
     success_url = reverse_lazy('trains:home')
+    success_message = 'Поезд успешно удален'
 
 
 class TrainListView(ListView):

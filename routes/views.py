@@ -1,5 +1,7 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, DeleteView
@@ -12,7 +14,7 @@ from .models import City
 
 # Create your views here.
 
-
+@login_required
 def home(request):
     form = RouteForm()
     return render(request, 'routes/home.html', {'form': form})
@@ -81,9 +83,10 @@ class RouteDetailView(DetailView):
     template_name = 'routes/route_detail.html'
 
 
-class RouteDeleteView(DeleteView):
+class RouteDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Route
     success_url = reverse_lazy('home')
+    success_message = 'Маршрут успешно удален'
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)

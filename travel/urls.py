@@ -29,4 +29,5 @@ urlpatterns = [
     path('routelist/', RouteListView.as_view(), name='route_list'),
     path('detaillist/<int:pk>/', RouteDetailView.as_view(), name='route_detail'),
     path('delete/<int:pk>/', RouteDeleteView.as_view(), name='delete'),
+    path('accounts/', include(('accounts.urls', 'accounts'))),
 ]
